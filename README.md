@@ -1,5 +1,4 @@
 
-
 # Broom
 *A reactive task runner inspired by Nevermore's maid class.*
 
@@ -44,7 +43,7 @@ cleaner.stuff = function() -- cleans the `stuff` task, sets new task.
 end
 ```
 
-You can clean all tasks by calling the `clean` (or `DoCleaning`) function.
+You can clean all tasks by calling the `clean` (or `DoCleaning`) method.
 ```lua
 cleaner:clean() -- cleans up ALL tasks
 ```
@@ -76,11 +75,7 @@ end
 
 cleaner:give(other)
 cleaner.bar = function()
-    other = Broom()
-    other.clean = function()
-        -- when subclean is cleaned, 
-    end
-    cleaner:give(other)
+    -- do something
 end
 
 cleaner.baz = {
