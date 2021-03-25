@@ -61,7 +61,6 @@ You can set any of the following types as a task:
 
 - Tasks can create other tasks (which can be cleaned in the same cycle)
 - All cleaning functions are **yielding**
-- 
 
 ## Full Example  (Lua)
 
