@@ -34,6 +34,7 @@ class Broom
 	give: (T) =>
 		assert T, ':give expects a cleanable value'
 		table.insert tasks, T
+		#tasks
 
 	Destroy: => @clean!
 

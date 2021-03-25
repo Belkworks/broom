@@ -38,7 +38,8 @@ do
     end,
     give = function(self, T)
       assert(T, ':give expects a cleanable value')
-      return table.insert(tasks, T)
+      table.insert(tasks, T)
+      return #tasks
     end,
     Destroy = function(self)
       return self:clean()
