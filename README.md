@@ -46,7 +46,7 @@ end
 
 You can clean all tasks by calling the `clean` (or `DoCleaning`) function.
 ```lua
-cleaner:clean() -- runs up ALL tasks
+cleaner:clean() -- cleans up ALL tasks
 ```
 
 ### Cleanable tasks
