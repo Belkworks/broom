@@ -16,7 +16,7 @@ class Broom
 				return old!
 			when 'table'
 				assert old.Destroy, 'cant destroy a table without .Destroy!'
-				return old.Destroy!
+				return old\Destroy!
 
 		if typeof
 			if 'RBXScriptConnection' == typeof old

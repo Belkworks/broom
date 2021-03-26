@@ -17,7 +17,7 @@ do
         return old()
       elseif 'table' == _exp_0 then
         assert(old.Destroy, 'cant destroy a table without .Destroy!')
-        return old.Destroy()
+        return old:Destroy()
       end
       if typeof then
         if 'RBXScriptConnection' == typeof(old) then
