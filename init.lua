@@ -1,32 +1,9 @@
 local Broom
 do
   local _class_0
-  local tasks
   local _base_0 = {
-    __newindex = function(self, K, V)
-      local old = tasks[K]
-      if old == V then
-        return 
-      end
-      tasks[K] = V
-      if old == nil then
-        return 
-      end
-      local _exp_0 = type(old)
-      if 'function' == _exp_0 then
-        return old()
-      elseif 'table' == _exp_0 then
-        assert(old.Destroy, 'cant destroy a table without .Destroy!')
-        return old:Destroy()
-      end
-      if typeof then
-        if 'RBXScriptConnection' == typeof(old) then
-          return old:Disconnect()
-        end
-      end
-      return error('don\'t know how to clean: ' .. tostring(old))
-    end,
     clean = function(self)
+      local tasks = self.tasks
       while true do
         local iter = pairs(tasks)
         local k = iter(tasks)
@@ -38,8 +15,8 @@ do
     end,
     give = function(self, T)
       assert(T, ':give expects a cleanable value')
-      table.insert(tasks, T)
-      return #tasks
+      table.insert(self.tasks, T)
+      return #self.tasks
     end,
     Destroy = function(self)
       return self:clean()
@@ -53,7 +30,34 @@ do
   }
   _base_0.__index = _base_0
   _class_0 = setmetatable({
-    __init = function() end,
+    __init = function(self)
+      self.tasks = { }
+      return setmetatable(self, {
+        __newindex = function(self, K, V)
+          local old = self.tasks[K]
+          if old == V then
+            return 
+          end
+          self.tasks[K] = V
+          if old == nil then
+            return 
+          end
+          local _exp_0 = type(old)
+          if 'function' == _exp_0 then
+            return old()
+          elseif 'table' == _exp_0 then
+            assert(old.Destroy, 'cant destroy a table without .Destroy!')
+            return old:Destroy()
+          end
+          if typeof then
+            if 'RBXScriptConnection' == typeof(old) then
+              return old:Disconnect()
+            end
+          end
+          return error('don\'t know how to clean: ' .. tostring(old))
+        end
+      })
+    end,
     __base = _base_0,
     __name = "Broom"
   }, {
@@ -65,8 +69,6 @@ do
     end
   })
   _base_0.__class = _class_0
-  local self = _class_0
-  tasks = { }
   Broom = _class_0
   return _class_0
 end
