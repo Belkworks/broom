@@ -2,6 +2,29 @@ local Broom
 do
   local _class_0
   local _base_0 = {
+    __newindex = function(self, K, V)
+      local old = self.tasks[K]
+      if old == V then
+        return 
+      end
+      self.tasks[K] = V
+      if old == nil then
+        return 
+      end
+      local _exp_0 = type(old)
+      if 'function' == _exp_0 then
+        return old()
+      elseif 'table' == _exp_0 then
+        assert(old.Destroy, 'cant destroy a table without .Destroy!')
+        return old:Destroy()
+      end
+      if typeof then
+        if 'RBXScriptConnection' == typeof(old) then
+          return old:Disconnect()
+        end
+      end
+      return error('don\'t know how to clean: ' .. tostring(old))
+    end,
     clean = function(self)
       local tasks = self.tasks
       while true do
@@ -31,32 +54,7 @@ do
   _base_0.__index = _base_0
   _class_0 = setmetatable({
     __init = function(self)
-      self.tasks = { }
-      return setmetatable(self, {
-        __newindex = function(self, K, V)
-          local old = self.tasks[K]
-          if old == V then
-            return 
-          end
-          self.tasks[K] = V
-          if old == nil then
-            return 
-          end
-          local _exp_0 = type(old)
-          if 'function' == _exp_0 then
-            return old()
-          elseif 'table' == _exp_0 then
-            assert(old.Destroy, 'cant destroy a table without .Destroy!')
-            return old:Destroy()
-          end
-          if typeof then
-            if 'RBXScriptConnection' == typeof(old) then
-              return old:Disconnect()
-            end
-          end
-          return error('don\'t know how to clean: ' .. tostring(old))
-        end
-      })
+      return rawset(self, 'tasks', { })
     end,
     __base = _base_0,
     __name = "Broom"

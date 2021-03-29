@@ -2,27 +2,27 @@
 -- SFZILabs 2021
 
 class Broom
-    new: =>
-        @tasks = {}
-        setmetatable @, __newindex: (K, V) =>
-            old = @tasks[K]
-            return if old == V
+    new: => rawset @, 'tasks', {}
 
-            @tasks[K] = V
-            return if old == nil
-        
-            switch type old
-                when 'function'
-                    return old!
-                when 'table'
-                    assert old.Destroy, 'cant destroy a table without .Destroy!'
-                    return old\Destroy!
+    __newindex: (K, V) =>
+        old = @tasks[K]
+        return if old == V
 
-            if typeof
-                if 'RBXScriptConnection' == typeof old
-                    return old\Disconnect!
+        @tasks[K] = V
+        return if old == nil
+    
+        switch type old
+            when 'function'
+                return old!
+            when 'table'
+                assert old.Destroy, 'cant destroy a table without .Destroy!'
+                return old\Destroy!
 
-            error 'don\'t know how to clean: '..tostring old
+        if typeof
+            if 'RBXScriptConnection' == typeof old
+                return old\Disconnect!
+
+        error 'don\'t know how to clean: '..tostring old
 
     clean: =>
         tasks = @tasks
