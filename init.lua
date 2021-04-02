@@ -30,10 +30,10 @@ do
       while true do
         local iter = pairs(tasks)
         local k = iter(tasks)
-        self[k] = nil
-        if not (iter(tasks)) then
+        if k == nil then
           break
         end
+        self[k] = nil
       end
     end,
     give = function(self, T)

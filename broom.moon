@@ -29,8 +29,8 @@ class Broom
         while true
             iter = pairs tasks
             k = iter tasks
+            break if k == nil
             @[k] = nil
-            break unless iter tasks
 
     give: (T) =>
         assert T, ':give expects a cleanable value'
