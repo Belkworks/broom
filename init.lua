@@ -19,8 +19,11 @@ do
         return old:Destroy()
       end
       if typeof then
-        if 'RBXScriptConnection' == typeof(old) then
+        local _exp_1 = typeof(old)
+        if 'RBXScriptConnection' == _exp_1 then
           return old:Disconnect()
+        elseif 'Instance' == _exp_1 then
+          return old:Destroy()
         end
       end
       return error('don\'t know how to clean: ' .. tostring(old))

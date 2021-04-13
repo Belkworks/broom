@@ -19,8 +19,11 @@ class Broom
                 return old\Destroy!
 
         if typeof
-            if 'RBXScriptConnection' == typeof old
-                return old\Disconnect!
+            switch typeof old
+                when 'RBXScriptConnection'
+                    return old\Disconnect!
+                when 'Instance'
+                    return old\Destroy!
 
         error 'don\'t know how to clean: '..tostring old
 
