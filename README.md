@@ -53,8 +53,11 @@ cleaner:clean() -- cleans up ALL tasks
 You can set any of the following types as a task:
 - Functions
 - Tables with a `Destroy` function
-- RBXScriptConnections (when running in ROBLOX)
 - Other Broom instances
+
+When running in ROBLOX, you can also set these types as tasks:
+- RBXScriptConnections
+- Instances
 
 ### Tips
 
