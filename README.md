@@ -16,17 +16,30 @@ cleaner = Broom()
 
 ### Assigning Tasks
 
-To assign a task, set an index.
+To assign a named task, set an index.
 ```lua
 cleaner.stuff = function()
     -- do some cleaning...
 end
 ```
 
-Alternatively, you can call the `give` (or `GiveTask`) method.
+Alternatively, you can call the `give` (or `GiveTask`) method to assign an unnamed task.
 ```lua
 cleaner:give(function()
     -- do some cleaning...
+end)
+```
+
+For usage on ROBLOX `Signals`, you can use the `connect` (or `Connect`) method.
+```lua
+RunService = game:GetService('RunService')
+cleaner:connect(RunService.Heartbeat, function(delta)
+    -- Heartbeat callback
+end)
+
+-- This is equivalent to
+cleaner:give(RunService.Heartbeat:Connect(function(delta)
+    -- Heartbeat callback
 end)
 ```
 
@@ -62,13 +75,15 @@ When running in ROBLOX, you can also set these types as tasks:
 ### Tips
 
 - Tasks can create other tasks (which can be cleaned in the same cycle)
-- All cleaning functions are **yielding**
+- All cleaning functions are done **synchronously**
 
 ## Full Example  (Lua)
 
 ```lua
 cleaner = Broom()
+
 other = Broom()
+cleaner:give(other)
 other.foo = function()
     -- do something
     other:give(function()
@@ -76,10 +91,13 @@ other.foo = function()
     end
 end
 
-cleaner:give(other)
 cleaner.bar = function()
     -- do something
 end
+
+cleaner:give(function()
+    -- do something
+end)
 
 cleaner.baz = {
     Destroy = function()
