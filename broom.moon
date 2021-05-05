@@ -2,13 +2,27 @@
 -- SFZILabs 2021
 
 class Broom
-    new: => rawset @, 'tasks', {}
+    new: =>
+        Properties =
+            tasks: {}
+            
+            -- Broom can clean broom
+            Destroy: @clean
 
-    __newindex: (K, V) =>
-        old = @tasks[K]
-        return if old == V
+            -- Nevermore maid interop
+            DoCleaning: @clean
+            GiveTask: @give
 
-        @tasks[K] = V
+            -- ROBLOX standard
+            Connect: @connect
+
+        rawset @, K, V for K, V in pairs Properties
+
+    __newindex: (Name, Task) =>
+        old = @tasks[Name]
+        return if old == Task
+
+        @tasks[Name] = Task
         return if old == nil
     
         switch type old
@@ -30,17 +44,16 @@ class Broom
     clean: =>
         tasks = @tasks
         while true
-            iter = pairs tasks
-            k = iter tasks
-            break if k == nil
-            @[k] = nil
+            key = (pairs tasks) tasks
+            break if key == nil
+            @[key] = nil
 
-    give: (T) =>
-        assert T, ':give expects a cleanable value'
-        table.insert @tasks, T
-        #@tasks
+    count: =>
+        #[key for key in pairs @tasks]
 
-    Destroy: => @clean!
+    give: (Task) =>
+        assert Task, ':give expects a cleanable value'
+        table.insert @tasks, Task
 
-    DoCleaning: => @clean! -- for interop with Nevermore maids
-    GiveTask: (T) => @give T -- for interop with Nevermore maids
+    connect: (Signal, Callback) =>
+        @give Signal\Connect Callback

@@ -2,12 +2,12 @@ local Broom
 do
   local _class_0
   local _base_0 = {
-    __newindex = function(self, K, V)
-      local old = self.tasks[K]
-      if old == V then
+    __newindex = function(self, Name, Task)
+      local old = self.tasks[Name]
+      if old == Task then
         return 
       end
-      self.tasks[K] = V
+      self.tasks[Name] = Task
       if old == nil then
         return 
       end
@@ -31,33 +31,45 @@ do
     clean = function(self)
       local tasks = self.tasks
       while true do
-        local iter = pairs(tasks)
-        local k = iter(tasks)
-        if k == nil then
+        local key = (pairs(tasks))(tasks)
+        if key == nil then
           break
         end
-        self[k] = nil
+        self[key] = nil
       end
     end,
-    give = function(self, T)
-      assert(T, ':give expects a cleanable value')
-      table.insert(self.tasks, T)
-      return #self.tasks
+    count = function(self)
+      return #(function()
+        local _accum_0 = { }
+        local _len_0 = 1
+        for key in pairs(self.tasks) do
+          _accum_0[_len_0] = key
+          _len_0 = _len_0 + 1
+        end
+        return _accum_0
+      end)()
     end,
-    Destroy = function(self)
-      return self:clean()
+    give = function(self, Task)
+      assert(Task, ':give expects a cleanable value')
+      return table.insert(self.tasks, Task)
     end,
-    DoCleaning = function(self)
-      return self:clean()
-    end,
-    GiveTask = function(self, T)
-      return self:give(T)
+    connect = function(self, Signal, Callback)
+      return self:give(Signal:Connect(Callback))
     end
   }
   _base_0.__index = _base_0
   _class_0 = setmetatable({
     __init = function(self)
-      return rawset(self, 'tasks', { })
+      local Properties = {
+        tasks = { },
+        Destroy = self.clean,
+        DoCleaning = self.clean,
+        GiveTask = self.give,
+        Connect = self.connect
+      }
+      for K, V in pairs(Properties) do
+        rawset(self, K, V)
+      end
     end,
     __base = _base_0,
     __name = "Broom"
