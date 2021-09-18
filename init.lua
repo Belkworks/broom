@@ -55,6 +55,15 @@ do
     end,
     connect = function(self, Signal, Callback)
       return self:give(Signal:Connect(Callback))
+    end,
+    alive = function(self)
+      local Alive = true
+      self:give(function()
+        Alive = false
+      end)
+      return function()
+        return Alive
+      end
     end
   }
   _base_0.__index = _base_0

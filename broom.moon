@@ -57,3 +57,8 @@ class Broom
 
     connect: (Signal, Callback) =>
         @give Signal\Connect Callback
+
+    alive: =>
+        Alive = true
+        @give -> Alive = false
+        -> Alive
