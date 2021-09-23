@@ -61,6 +61,19 @@ You can clean all tasks by calling the `clean` (or `DoCleaning`) method.
 cleaner:clean() -- cleans up ALL tasks
 ```
 
+You can get a function that will clean all tasks by calling `cleaner`
+```lua
+fn = cleaner:cleaner()
+fn() -- same as calling cleaner:clean()
+```
+
+You can replace a property using the `hook` method.  
+When all tasks are cleaned, the property will be put back to its original value.
+```lua
+t = { a = 1 }
+cleaner:hook(t, 'a', 2) -- t.a will be 2 until broom is cleaned
+```
+
 ### Cleanable tasks
 
 You can set any of the following types as a task:
@@ -80,32 +93,18 @@ When running in ROBLOX, you can also set these types as tasks:
 ## Full Example  (Lua)
 
 ```lua
-cleaner = Broom()
+broom = Broom()
 
-other = Broom()
-cleaner:give(other)
-other.foo = function()
-    -- do something
-    other:give(function()
-        -- will run when ALL tasks are cleaned
-    end
-end
-
-cleaner.bar = function()
-    -- do something
-end
-
-cleaner:give(function()
-    -- do something
+broom.something = function()
+    -- this will run when broom.something changes
+    -- or when broom:clean() is called
 end)
 
-cleaner.baz = {
-    Destroy = function()
-        -- do something
-    end
-}
+-- for ROBLOX usage
+broom.part = Instance.new('Part')
+broom:connect(workspace.ChildAdded, function(instance)
+    -- this signal will be cleaned when broom:clean() is called
+end)
 
-cleaner.bar = nil -- cleans ONLY bar
-
-cleaner:clean() -- cleans other (and in turn foo) and then baz
+broom:clean()
 ```
