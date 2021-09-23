@@ -48,6 +48,12 @@ class Broom
             break if key == nil
             @[key] = nil
 
+    cleaner: =>
+        -> @clean!
+
+    connectClean: (Signal) =>
+        Signal\Connect @cleaner!
+
     count: =>
         #[key for key in pairs @tasks]
 
@@ -57,6 +63,11 @@ class Broom
 
     connect: (Signal, Callback) =>
         @give Signal\Connect Callback
+
+    hook: (Object, Property, Value) =>
+        Old = Object[Property]
+        Object[Property] = Value
+        @give -> Old[Property] = Old
 
     alive: =>
         Alive = true
