@@ -67,7 +67,7 @@ class Broom
     hook: (Object, Property, Value) =>
         Old = Object[Property]
         Object[Property] = Value
-        @give -> Old[Property] = Old
+        @give -> Object[Property] = Old
 
     alive: =>
         Alive = true

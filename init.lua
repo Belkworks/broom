@@ -38,6 +38,14 @@ do
         self[key] = nil
       end
     end,
+    cleaner = function(self)
+      return function()
+        return self:clean()
+      end
+    end,
+    connectClean = function(self, Signal)
+      return Signal:Connect(self:cleaner())
+    end,
     count = function(self)
       return #(function()
         local _accum_0 = { }
@@ -55,6 +63,13 @@ do
     end,
     connect = function(self, Signal, Callback)
       return self:give(Signal:Connect(Callback))
+    end,
+    hook = function(self, Object, Property, Value)
+      local Old = Object[Property]
+      Object[Property] = Value
+      return self:give(function()
+        Object[Property] = Old
+      end)
     end,
     alive = function(self)
       local Alive = true
