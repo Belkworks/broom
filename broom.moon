@@ -73,3 +73,8 @@ class Broom
         Alive = true
         @give -> Alive = false
         -> Alive
+
+    apply: (Callback) =>
+        Args = {}
+        @give -> Callback unpack Args
+        (...) -> Args = {...} 

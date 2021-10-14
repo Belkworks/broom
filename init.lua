@@ -79,6 +79,17 @@ do
       return function()
         return Alive
       end
+    end,
+    apply = function(self, Callback)
+      local Args = { }
+      self:give(function()
+        return Callback(unpack(Args))
+      end)
+      return function(...)
+        Args = {
+          ...
+        }
+      end
     end
   }
   _base_0.__index = _base_0
