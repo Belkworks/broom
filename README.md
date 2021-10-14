@@ -43,6 +43,28 @@ cleaner:give(RunService.Heartbeat:Connect(function(delta)
 end)
 ```
 
+You can replace a property using the `hook` method.  
+When all tasks are cleaned, the property will be put back to its original value.
+```lua
+t = { a = 1 }
+cleaner:hook(t, 'a', 2) -- t.a will be 2 until broom is cleaned
+```
+
+You can give a cleaner parameters by using the `apply` method.
+```lua
+fn = cleaner:apply(print)
+fn(1, 2, 3) -- does nothing
+cleaner:clean() -- prints 1, 2, 3
+```
+
+You can get a mutex-like boolean by using the `alive` method.
+```lua
+fn = cleaner:alive()
+fn() -- true
+cleaner:clean()
+fn() -- false
+```
+
 ### Cleaning Tasks
 
 To cleanup a specific task, change an index.  
@@ -67,11 +89,9 @@ fn = cleaner:cleaner()
 fn() -- same as calling cleaner:clean()
 ```
 
-You can replace a property using the `hook` method.  
-When all tasks are cleaned, the property will be put back to its original value.
+You can clean a Broom via a signal with `connectClean`
 ```lua
-t = { a = 1 }
-cleaner:hook(t, 'a', 2) -- t.a will be 2 until broom is cleaned
+cleaner:connectClean(signal)
 ```
 
 ### Cleanable tasks
