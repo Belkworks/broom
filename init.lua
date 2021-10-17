@@ -64,6 +64,11 @@ do
     connect = function(self, Signal, Callback)
       return self:give(Signal:Connect(Callback))
     end,
+    signal = function(self, Signal)
+      return self:give(function()
+        return Signal:Disconnect()
+      end)
+    end,
     hook = function(self, Object, Property, Value)
       local Old = Object[Property]
       Object[Property] = Value

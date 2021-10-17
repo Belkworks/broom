@@ -64,6 +64,9 @@ class Broom
     connect: (Signal, Callback) =>
         @give Signal\Connect Callback
 
+    signal: (Signal) =>
+        @give -> Signal\Disconnect!
+
     hook: (Object, Property, Value) =>
         Old = Object[Property]
         Object[Property] = Value
