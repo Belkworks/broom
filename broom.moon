@@ -81,3 +81,6 @@ class Broom
         Args = {}
         @give -> Callback unpack Args
         (...) -> Args = {...} 
+
+    namecall: (Object, Method) =>
+        @give -> Object[Method] Object

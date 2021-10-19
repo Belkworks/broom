@@ -95,6 +95,11 @@ do
           ...
         }
       end
+    end,
+    namecall = function(self, Object, Method)
+      return self:give(function()
+        return Object[Method](Object)
+      end)
     end
   }
   _base_0.__index = _base_0
