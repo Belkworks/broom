@@ -94,6 +94,11 @@ You can clean a Broom via a signal with `connectClean`
 cleaner:connectClean(signal)
 ```
 
+When running in ROBLOX, you can clean a Broom after a delay with `cleanAfter`
+```lua
+cleaner:cleanAfter(1) -- cleans in 1 second
+```
+
 ### Cleanable tasks
 
 You can set any of the following types as a task:

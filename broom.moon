@@ -51,6 +51,9 @@ class Broom
     cleaner: =>
         -> @clean!
 
+    cleanAfter: (time) =>
+        task.delay time, @cleaner!
+
     connectClean: (Signal) =>
         Signal\Connect @cleaner!
 

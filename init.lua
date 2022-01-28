@@ -43,6 +43,9 @@ do
         return self:clean()
       end
     end,
+    cleanAfter = function(self, time)
+      return task.delay(time, self:cleaner())
+    end,
     connectClean = function(self, Signal)
       return Signal:Connect(self:cleaner())
     end,
